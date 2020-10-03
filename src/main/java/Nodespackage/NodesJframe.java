@@ -12,7 +12,7 @@ package Nodespackage;
 public class NodesJframe extends javax.swing.JFrame
 {
 
-	Stack stack = new Stack();
+	LinkedStringStack stack = new LinkedStringStack();
 	Node node = new Node();
 
 	/**
@@ -21,6 +21,7 @@ public class NodesJframe extends javax.swing.JFrame
 	public NodesJframe()
 	{
 		initComponents();
+		fillStack();
 	}
 
 	/**
@@ -139,6 +140,13 @@ public class NodesJframe extends javax.swing.JFrame
         });
 
         ClearStackjButton.setText("Clear Stack");
+        ClearStackjButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                ClearStackjButtonActionPerformed(evt);
+            }
+        });
 
         printStackButton.setText("Print Stack");
         printStackButton.addActionListener(new java.awt.event.ActionListener()
@@ -276,8 +284,9 @@ public class NodesJframe extends javax.swing.JFrame
     {//GEN-HEADEREND:event_CurrentTopjButtonActionPerformed
 		try
 		{
-			ouputjTextArea.setText("current top is " + stack.top());
-		} catch (stackAcception e)
+			ouputjTextArea.setText("current top is " + stack.peek());
+		}
+		catch (EmptyStackException e)
 		{
 			ouputjTextArea.setText(e.getMessage());
 		}
@@ -289,7 +298,8 @@ public class NodesJframe extends javax.swing.JFrame
 		{
 			stack.pop();
 			ouputjTextArea.setText("current top is Deleted");
-		} catch (stackAcception e)
+		}
+		catch (EmptyStackException e)
 		{
 			ouputjTextArea.setText(e.getMessage());
 		}
@@ -304,30 +314,31 @@ public class NodesJframe extends javax.swing.JFrame
     private void printStackButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_printStackButtonActionPerformed
     {//GEN-HEADEREND:event_printStackButtonActionPerformed
 
-		try
-		{
-			ouputjTextArea.setText(stack.Display());
-		} catch (stackAcception e)
-		{
-			ouputjTextArea.setText(e.getMessage());
-		}
+
+		
+			ouputjTextArea.setText(stack.toString());
+		
+
     }//GEN-LAST:event_printStackButtonActionPerformed
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_SearchButtonActionPerformed
     {//GEN-HEADEREND:event_SearchButtonActionPerformed
-		try
+		String searchText = searchTextField.getText();
+		if (stack.contains(searchText))
 		{
-			String target = searchTextField.getText();
-			stack.search(target);
-		} catch (stackAcception e)
-		{
-			ouputjTextArea.setText(e.getMessage());
-		}
+			ouputjTextArea.setText("The Stack contains '" + searchText + "'");
 
-//		if(stack.search(target==true)){
-//			ouputjTextArea.setText("found");
-//		}
+		}
+		else
+		{
+			ouputjTextArea.setText("The Stack does not contain '" + searchText + "'");
+		}
     }//GEN-LAST:event_SearchButtonActionPerformed
+
+    private void ClearStackjButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_ClearStackjButtonActionPerformed
+    {//GEN-HEADEREND:event_ClearStackjButtonActionPerformed
+        stack.clearStack();
+    }//GEN-LAST:event_ClearStackjButtonActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -349,16 +360,20 @@ public class NodesJframe extends javax.swing.JFrame
 					break;
 				}
 			}
-		} catch (ClassNotFoundException ex)
+		}
+		catch (ClassNotFoundException ex)
 		{
 			java.util.logging.Logger.getLogger(NodesJframe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex)
+		}
+		catch (InstantiationException ex)
 		{
 			java.util.logging.Logger.getLogger(NodesJframe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex)
+		}
+		catch (IllegalAccessException ex)
 		{
 			java.util.logging.Logger.getLogger(NodesJframe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex)
+		}
+		catch (javax.swing.UnsupportedLookAndFeelException ex)
 		{
 			java.util.logging.Logger.getLogger(NodesJframe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
@@ -393,4 +408,13 @@ public class NodesJframe extends javax.swing.JFrame
     private javax.swing.JButton printStackButton;
     private javax.swing.JTextField searchTextField;
     // End of variables declaration//GEN-END:variables
+
+	private void fillStack()
+	{
+		stack.push("C++");
+		stack.push("C#");
+		stack.push("Java");
+		stack.push("SQL");
+
+	}
 }
